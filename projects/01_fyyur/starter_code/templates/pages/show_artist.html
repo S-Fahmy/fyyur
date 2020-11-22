@@ -1,13 +1,16 @@
 {% extends 'layouts/main.html' %}
 {% block title %}{{ artist.name }} | Artist{% endblock %}
 {% block content %}
+{% if artist|length > 0 %}
 <div class="row">
 	<div class="col-sm-6">
 		<h1 class="monospace">
-			{{ artist.name }}
+			{{ artist.name }} 
 		</h1>
 		<p class="subtitle">
 			ID: {{ artist.id }}
+			<span><a href="/artists/{{artist.id}}/edit">Edit</a></span>
+
 		</p>
 		<div class="genres">
 			{% for genre in artist.genres %}
@@ -71,6 +74,8 @@
 		{% endfor %}
 	</div>
 </section>
-
+{% else %}
+<h4>Artist doesn't exist</h4>
+{% endif %}
 {% endblock %}
 
