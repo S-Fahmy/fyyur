@@ -10,7 +10,7 @@ class FormView extends Component {
       question: "",
       answer: "",
       difficulty: 1,
-      category: 1,
+      category: 0,
       categories: {}
     }
   }
@@ -90,6 +90,7 @@ class FormView extends Component {
             Category
             <select name="category" onChange={this.handleChange}>
               {Object.keys(this.state.categories).map(id => {
+                
                   return (
                     <option key={id} value={id}>{this.state.categories[id]}</option>
                   )

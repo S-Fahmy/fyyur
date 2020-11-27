@@ -1,7 +1,9 @@
 .vscode
 __pycache__
 venv
-
+backend/config.py
+backend/migrations
+frontend/node_modules
 # OS generated files #
 ######################
 .DS_Store
@@ -11,3 +13,4 @@ venv
 .Trashes
 ehthumbs.db
 Thumbs.db
+

@@ -10,5 +10,7 @@ MarkupSafe==1.1.1
 psycopg2-binary==2.8.2
 pytz==2019.1
 six==1.12.0
-SQLAlchemy==1.3.4
-Werkzeug==0.15.4
+# SQLAlchemy==1.3.4
+# Werkzeug==0.15.4
+#most of your included versions are very old and bugged !!
+# manually did a pip upgrade on, SQLAlchemy, Wekzeug
