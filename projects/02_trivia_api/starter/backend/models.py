@@ -66,7 +66,7 @@ class Question(db.Model):
             'question': self.question,
             'answer': self.answer,
             'category': self.category_id, #the front end expects a category value containing the category id.
-            'difficulty': self.difficulty,
+            'difficulty': self.difficulty
             # 'category_id': self.category_id
         }
 

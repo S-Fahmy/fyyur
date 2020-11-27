@@ -49,34 +49,31 @@ def create_app(test_config=None):
         })
 
     '''
-  @TODO: 
-  Create an endpoint to handle GET requests for questions, 
-  including pagination (every 10 questions). 
-  This endpoint should return a list of questions, 
+  @TODO:
+  Create an endpoint to handle GET requests for questions,
+  including pagination (every 10 questions).
+  This endpoint should return a list of questions,
   number of total questions, current category, categories.
 
   TEST: At this point, when you start the application
   you should see questions and categories generated,
   ten questions per page and pagination at the bottom of the screen for three pages.
-  Clicking on the page numbers should update the questions. 
+  Clicking on the page numbers should update the questions.
   '''
     @app.route('/questions')
-    def get_questions():
+    def get_or_search_questions():
 
-        all_questions = Question.query.all()
+        # i made the frontend call this route to search questions so checking if its either a specific question search call or getting all questions call
+        # if it the get request has json body that means its a search
+        searchArg = request.args.get('search', default=None, type=str)
 
-        paginated_questions = paginate_questions(request, all_questions, 10)
+        if searchArg != None:
 
-        if paginated_questions == None:
+            return search_questions(searchArg)
 
-            abort(404)
+        else:
 
-        return jsonify({
-            "questions": paginated_questions,
-            "total_questions": len(all_questions),
-            "categories": get_categories_names_list(),
-            "currentCategory": None
-        })
+            return get_questions()
 
     '''
   @TODO: 
@@ -128,18 +125,27 @@ def create_app(test_config=None):
   '''
 
     @app.route('/questions', methods=['POST'])
-    def add_or_search_questions():
+    def add_question():
+        question_form = request.get_json()
+        # category id is incremented by 1 because on the front end category is an array of string and its index/id starts at 0
+        category_id = int(question_form.get('category')) + 1
+        try:
+            new_question = Question(question=question_form.get('question'), answer=question_form.get('answer'),
+                                    difficulty=question_form.get('difficulty'), category_id=category_id)
 
-        # the frontend is calling this route for searching questions so checking if its either a search call or saving a new question call
-        search_term = request.get_json().get('searchTerm')
+            new_question.insert()
+            id = new_question.id
 
-        if search_term != None:
+        except:
+            abort(422)
+            print(sys.exc_info())
 
-            return search_questions(search_term)
+        finally:
+            db.session.close()
 
-        else:
-
-            return add_new_question(request)
+        # i'm returning id for testing purposes
+        return {"success": True,
+                "id": new_question.id}
 
     '''
   @TODO: 
@@ -279,27 +285,23 @@ def create_app(test_config=None):
 ###############################
 
 
-def add_new_question(request):
-    question_form = request.get_json()
-    # category id is incremented by 1 because on the front end category is an array of string and its index/id starts at 0
-    category_id = int(question_form.get('category')) + 1
-    try:
-        new_question = Question(question=question_form.get('question'), answer=question_form.get('answer'),
-                                difficulty=question_form.get('difficulty'), category_id=category_id)
+def get_questions():
 
-        new_question.insert()
-        id = new_question.id
+    all_questions = Question.query.all()
 
-    except:
-        abort(422)
-        print(sys.exc_info())
+    paginated_questions = paginate_questions(
+        request, all_questions, 10)
 
-    finally:
-        db.session.close()
+    if paginated_questions == None:
 
-    # i'm returning id for testing purposes
-    return {"success": True,
-            "id": new_question.id}
+        abort(404)
+
+    return jsonify({
+        "questions": paginated_questions,
+        "total_questions": len(all_questions),
+        "categories": get_categories_names_list(),
+        "currentCategory": None
+    })
 
 
 def search_questions(search_term):
