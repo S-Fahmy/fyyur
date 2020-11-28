@@ -2,7 +2,7 @@
 
 > ### A simple entertaining app where its main goal is for visitors to find and answer questions organized by varied categories, and play quick quiz games to show off their trivial knowledge, Users can also add new questions and categorize them.
 
-**The trivia app frontend design is a reactive design developed using react, communicating with the app backend api using REST.**
+The trivia app frontend design is a reactive design developed using react, communicating with the app backend api using REST.
 ---
 ## getting started and Project dependencies
 
