@@ -1,18 +1,56 @@
 # **The trivia app!**
 
-> ## A simple entertaining app where its main goal is for visitors to find and answer questions organized by varied categories, and play quick quiz games to show off their trivial knowledge, Users can also add new questions and categorize them.
+> ### A simple entertaining app where its main goal is for visitors to find and answer questions organized by varied categories, and play quick quiz games to show off their trivial knowledge, Users can also add new questions and categorize them.
+
+**The trivia app frontend design is a reactive design developed using react, communicating with the app backend api using REST.**
+---
+## getting started and Project dependencies
+
+the backend runs on python and the Flask framework and other libraries and dependencies:
+
+- latest version of **python**
+- Postgres db
+- Flask framework
+- SQLAlchemy
+- Flask Cors
+
+the backend folder contains a `requirements.txt` file with the dependencies that needs to get installed
+to install the dependencies included in the file, navigate to the backend folder and run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+After the dependencies successfully install follow along:
+
+## Database Setup:
+With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
+```bash
+psql trivia < trivia.psql
+```
+
+## Running the application server:
+head back to the Windows cmd and assign the __init__.py file in the backend to the FLASK_APP environment variable to be able to run the app
+
+```bash
+set FLASK_APP=__init__.py
+
+flask run
+```
+
+
 
 ---
-
-## The trivia app frontend design is dynamic and is developed using react, communicating with the app backend api using REST.
 
 # API Reference
 
 > a detailed reference for all the available endpoints
 
 **Note:**
-For this reference the Question and Category models classes have a **format()** function that returns a dictionary that contains the entity data and ready for Json responses
+For this reference the Question and Category models classes have a **format()** function that returns a dictionary that contains the entity data and ready for Json responses.
+
 **`Formatted_question:`**
+
+```
 {
     'id': question.id,
     'question': question.question,
@@ -20,7 +58,7 @@ For this reference the Question and Category models classes have a **format()** 
     'category': question.category_id, #the front end expects a category value containing the category id.
     'difficulty': question.difficulty
 }
-
+```
 
 ## Endpoints:
 
@@ -52,7 +90,7 @@ the **search function** returns a dictionary with a formatted questions results 
 ```
 {
  "questions": formatted_questions[],
- "total_questions": len(all_questions),
+ "total_questions": 92,
  "currentCategory": None
 }
 ```
@@ -62,7 +100,13 @@ and the questions list is paginated, 10 questions per page is the default number
 
 ```
 {
- "questions": formatted_questions[],
+ "questions": {
+        'id': question.id,
+        'question': question.question,
+        'answer': question.answer,
+        'category': question.category_id, #the front end expects a category value containing the category id.
+        'difficulty': question.difficulty
+                },
  "total_questions": len(all_questions),
  "categories": get_categories_names_list(),
  "currentCategory": None
@@ -90,14 +134,14 @@ and the questions list is paginated, 10 questions per page is the default number
 
 > Post a new question and persist it in the dB
 
-- Request parameters: expects a json body that contains the questions data: question, answer, difficulty and category id
+- Request parameters: expects a json body that contains the questions data: question, answer, difficulty number and category id
 
 ```
 {
-   question: this.state.question,
-   answer: this.state.answer,
-   difficulty: this.state.difficulty,
-   category: this.state.category
+   question: "question",
+   answer: "answer,
+   difficulty: 2,
+   category: 1
  }
 ```
 
@@ -106,7 +150,7 @@ and the questions list is paginated, 10 questions per page is the default number
 ```
 {
  "success": True,
- "id" : id
+ "id" : 14
 }
 ```
 
@@ -122,8 +166,8 @@ and the questions list is paginated, 10 questions per page is the default number
 ```
 {
   "questions": formatted_questions[],
-  "totalQuestions": len(questions_by_category),
-  "currentCategory": current_category.type
+  "totalQuestions": 11,
+  "currentCategory": "selected_category_name"
  }
 ```
 
